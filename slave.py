@@ -69,8 +69,5 @@ while True:
         irc.send(("PONG " + recieved.split()[1] + "\r\n").encode())
 
     # -attempt commands-
-    try:
-        if recieved.split("!")[0] == ":" + owner and identify() == True:
-            commands()
-    except:
-        pass
+    if recieved.split("!")[0] == ":" + owner and identify() == True:
+        commands()
