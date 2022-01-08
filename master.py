@@ -73,8 +73,6 @@ def commands(command):
         sendmsg(" ".join(msgToSend))
         print("Message sent.")
 
-
-# ---necessary stuff: don't edit this---
 # -connection to server-
 print("Connecting...")
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
