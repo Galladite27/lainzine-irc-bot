@@ -36,10 +36,6 @@ def commands():
             print("Quitting.")
             quit()
 
-
-
-
-
 # ---necessary stuff: don't edit this---
 # -connection to server-
 print("Connecting...")
