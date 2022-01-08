@@ -31,7 +31,6 @@ def commands():
             command = command[:len(command)-2]
             os.system(command)
         else:
-            print("aaa")
             command = recieved.split(nickname + " ")[1]
             command = command[:len(command)-2]
             os.system(command)

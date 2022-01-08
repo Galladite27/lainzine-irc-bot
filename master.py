@@ -2,6 +2,12 @@
 import socket
 import threading
 
+# -server settings-
+server = "irc.libera.chat"
+port = 6667
+channel = "#Galladite"
+nickname = "bot-control"
+
 # -definitions-
 def sendmsg(message: str):
     irc.send(("PRIVMSG " + channel + " :" + message + "\r\n").encode())
@@ -12,12 +18,6 @@ def reply():
         command = str(input("> "))
         commands(command)
         print("")
-
-# -server settings-
-server = "irc.libera.chat"
-port = 6667
-channel = "#Galladite"
-nickname = "bot-control"
 
 # -help command list-
 commandList = [
