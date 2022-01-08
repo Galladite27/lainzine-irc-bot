@@ -31,10 +31,13 @@ commandList = [
         "\nAny instance of <bot name> may also be replaced by \"all\""
         ]
 
+activated = 0
 # -command definitions-
 def commands(command):
-    if command.split(" ")[0] == "activate":
+    global activated
+    if command.split(" ")[0] == "activate" and activated == 0:
         irc.send(("privmsg nickserv :identify bot-control " + command.split(" ")[1] + "\r\n").encode(encoding="UTF-8"))
+        activated = 1
         print("Activated.")
 
     if command.split(" ")[0] == "command":

@@ -3,32 +3,25 @@ import os
 import random
 import socket
 
-# from hashlib import sha512
-# from Crypto.PublicKey import RSA # requires pycryptodome
+# -server settings-
+server = "irc.libera.chat"
+port = 6667
+channel = "#Galladite"
+nickname = "bot" + str(random.randint(1, 99999))
+owner = "bot-control"
 
 # -definitions-
 def sendmsg(message: str):
     irc.send(("PRIVMSG " + channel + " :" + message + "\r\n").encode(encoding="UTF-8"))
 
 def identify():
-    irc.send(("WHOIS bot-control\r\n").encode(encoding="UTF-8"))
+    irc.send(("WHOIS " + owner + "\r\n").encode(encoding="UTF-8"))
     while True:
         recieved = irc.recv(2048).decode("UTF-8")
         if "logged in as" in recieved:
             return True
         if "End of /WHOIS list." in recieved:
             return False
-
-def verifyCommand():
-    if recieved.split("!")[0] == ":bot-control" and identify() == True:
-        print("Accepted.")
-        commands()
-
-# -server settings-
-server = "irc.libera.chat"
-port = 6667
-channel = "#Galladite"
-nickname = "bot" + str(random.randint(1, 99999))
 
 # -command definitions-
 def commands():
@@ -54,7 +47,6 @@ def commands():
         msgToSend = recieved.split(nickname + " ")[1].split("\r")[0].split(" ") # get the command from the message
         irc.send((msgToSend[0].upper() + " " + " ".join(msgToSend[1:]) + "\r\n").encode(encoding="UTF-8")) # prepare and send the command
 
-# ---necessary stuff: don't edit this---
 # -connection to server-
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 irc.connect((server, port))
@@ -64,7 +56,7 @@ irc.send(("JOIN " + channel + "\r\n").encode(encoding="UTF-8"))
 
 while True:
     recieved = irc.recv(2048).decode("UTF-8")
-    if recieved.__contains__("/NAMES") :
+    if "/NAMES" in recieved:
         break
 
 # -main loop-
@@ -78,6 +70,7 @@ while True:
 
     # -attempt commands-
     try:
-        verifyCommand()
+        if recieved.split("!")[0] == ":" + owner and identify() == True:
+            commands()
     except:
         pass
