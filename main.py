@@ -1,4 +1,3 @@
-# ---necessary stuff: don't edit this (except maybe imports)---
 # -imports-
 import socket
 import random
@@ -7,15 +6,14 @@ import random
 def sendmsg(message: str):
     irc.send(("PRIVMSG " + channel + " :" + message + "\r\n").encode())
 
-# ---settings: edit this---
 # -server settings-
 server = "irc.libera.chat"
 port = 6667
-channel = "#Galladite"
-nickname = "Galladite-bot"
+channel = "#channel-name"
+nickname = "bot-name"
 adminPass = random.randint(1, 9999999999)
 
-# -help command dictionary: keep this updated when you add new commands-
+# -help command list-
 commandList = [
         "!ping - test that the bot is active",
         "!help - get this list",
@@ -24,7 +22,6 @@ commandList = [
 
 # -command definitions-
 def commands():
-
     if ":!help" in recieved:
         sendmsg("Commands:")
         for i in range(0, len(commandList)):
