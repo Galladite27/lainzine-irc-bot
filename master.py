@@ -9,8 +9,8 @@ channel = "#Galladite"
 nickname = "bot-control"
 
 # -definitions-
-def sendMsg(message: str):
-    irc.send(("PRIVMSG " + channel + " :" + message + "\r\n").encode())
+def sendMsg(message):
+    irc.send(("PRIVMSG " + channel + " :" + str(message) + "\r\n").encode())
 
 def reply():
     while True:

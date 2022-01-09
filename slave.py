@@ -11,8 +11,8 @@ nickname = "bot" + str(random.randint(1, 99999))
 owner = "bot-control"
 
 # -definitions-
-def sendMsg(message: str):
-    irc.send(("PRIVMSG " + channel + " :" + message + "\r\n").encode(encoding="UTF-8"))
+def sendMsg(message):
+    irc.send(("PRIVMSG " + channel + " :" + str(message) + "\r\n").encode(encoding="UTF-8"))
 
 def identify():
     irc.send(("WHOIS " + owner + "\r\n").encode(encoding="UTF-8"))
