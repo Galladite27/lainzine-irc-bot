@@ -6,4 +6,4 @@ Only the master script can control the slaves, and also only when "activated" wi
 "Master" requires socket and threading
 "Slave" requires os, random and socket (with the current modules - only socket is strictly necessary)
 
-Info on commands can be found by typing "help" within the master script.
+Info on commands can be found by typing "help" within the master script or near the top of master.py.
