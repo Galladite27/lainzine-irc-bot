@@ -14,12 +14,11 @@ def sendMsg(message):
 
 def reply():
     while True:
-        command = str(input("> "))
+        command = str(input("\n> "))
         try:
             commands(command)
         except:
             print("Invalid command.")
-        print("")
 
 # -help command list-
 commandList = [
