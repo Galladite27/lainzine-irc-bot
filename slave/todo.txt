@@ -1,0 +1,3 @@
+Slaves sending specific errors back to master (e.g. "bot12345 has reported an error in command 'script all test': permission denied")
+Detect if python 3 installed, and if not to use a portable python environment?
+ \-->Shell and batch setup scripts

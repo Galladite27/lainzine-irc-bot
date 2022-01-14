@@ -1,12 +1,13 @@
 # -imports-
 import os
+import platform
 import random
 import socket
 import threading
 
 # -server settings-
 server = "irc.libera.chat"
-port = 6667
+port = 6667 
 channel = "#Galladite"
 nickname = "bot" + str(random.randint(1, 99999))
 owner = "bot-control"
@@ -24,8 +25,12 @@ def identify():
         if "End of /WHOIS list." in recieved:
             return False
 
+#untested function
 def newScript(script: str):
-    os.system("python3 scripts/" + script)
+    if hostOs := platform.system() == "Linux" or hostOs == "Darwin":
+        os.system("sh scripts/" + script.split(" ")[0] + ".sh " + script.split(" ")[1:])
+    elif hostOs := "Windows":
+        os.system("cmd.exe scripts\\" + script.split(" ")[0] + ".bat " + script.split(" ")[1:])
 
 # -command definitions-
 def commands():
@@ -49,6 +54,7 @@ def commands():
     if ":!ping " + nickname in recieved or ":!ping all" in recieved:
         sendMsg("Pong!")
 
+    #untested command
     if "!script " + nickname in recieved or ":!script all" in recieved:
         script = " ".join(recieved.split(" ")[2:])
         thread = threading.Thread(target=newScript)
