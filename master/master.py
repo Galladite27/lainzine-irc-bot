@@ -29,6 +29,7 @@ commandList = [
         "help - get this list",
         "kill <bot name> - disconnect a bot and stop the script",
         "ping <bot name> - make a bot send a message to IRC to check they are available",
+        "script <bot name> <script name> <arguments> - make bots execute a locally stored script with cmd or sh (UNTESTED)",
         "sendmsg <message> - directly send a message to the channel",
         "\nAny instance of <bot name> may also be replaced by \"all\""
         ]
