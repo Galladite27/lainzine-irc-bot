@@ -4,6 +4,6 @@ Keep the "slave" script running on a bot, use the "master" script to control the
 Only the master script can control the slaves, and also only when "activated" within the script.
 
 "Master" requires socket and threading.
-"Slave" requires os, random and socket (with the current modules - only socket is strictly necessary).
+"Slave" requires os, platform, random, socket and threadig (with the current modules - only socket is strictly necessary).
 
 Info on commands can be found by typing "help" within the master script or near the top of master.py.
