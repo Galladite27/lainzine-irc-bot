@@ -22,7 +22,7 @@ def identify():
         recieved = irc.recv(2048).decode("UTF-8")
         if "logged in as" in recieved:
             return True
-        if "End of /WHOIS list." in recieved:
+        elif "End of /WHOIS list." in recieved:
             return False
 
 #untested function
