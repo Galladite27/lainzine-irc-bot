@@ -29,7 +29,7 @@ def identify():
 def newScript(script: str):
     if hostOs := platform.system() == "Linux" or hostOs == "Darwin":
         os.system("sh scripts/" + script.split(" ")[0] + ".sh " + script.split(" ")[1:])
-    elif hostOs := "Windows":
+    elif hostOs == "Windows":
         os.system("cmd.exe scripts\\" + script.split(" ")[0] + ".bat " + script.split(" ")[1:])
 
 # -command definitions-
