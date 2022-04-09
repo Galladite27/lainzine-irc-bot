@@ -1,4 +1,6 @@
 # lainzine-irc-bot
+This code is shocking
+
 Requires settings changing at the top of both scripts.
 Keep the "slave" script running on a bot, use the "master" script to control them from wherever.
 Only the master script can control the slaves, and also only when "activated" within the script.
